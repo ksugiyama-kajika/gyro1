@@ -10,10 +10,14 @@
 <div id="txt">ここにデータを表示</div>             <!-- データを表示するdiv要素 -->
 <canvas id="canvas" width="300" height="400"></canvas>  <!-- 絵を書くcanvas要素 -->
 
+<body>
+<div id="txt">ここにデータを表示</div>             <!-- データを表示するdiv要素 -->
+<canvas id="canvas" width="300" height="400"></canvas>  <!-- ★絵を描くcanvas要素 -->
+
 <script>
 var alpha = 0, beta = 0, gamma = 0;             // ジャイロの値を入れる変数を3個用意
-var canvas = document.getElementById("canvas"); // canvas要素を取得
-var context = canvas.getContext("2d");          // 絵を書く部品を取得
+var canvas = document.getElementById("canvas"); // ★canvas要素を取得
+var context = canvas.getContext("2d");          // ★絵を描く部品を取得
 
 // ジャイロセンサの値が変化したら実行される deviceorientation イベント
 window.addEventListener("deviceorientation", (dat) => {
@@ -25,6 +29,7 @@ window.addEventListener("deviceorientation", (dat) => {
 // 指定時間ごとに繰り返し実行される setInterval(実行する内容, 間隔[ms]) タイマーを設定
 var timer = window.setInterval(() => {
     displayData();      // displayData 関数を実行
+    drawOrientation();  // 方向を描く
 }, 33); // 33msごとに（1秒間に約30回）
 
 // データを表示する displayData 関数
@@ -35,27 +40,26 @@ function displayData() {
                   + "gamma: " + gamma;          // z軸の値
 }
 
-// コンパスのような絵を描く draw Orientation 関数
+// コンパスのような絵を描く drawOrientation 関数
 function drawOrientation() {
-  var centerX = canvas.width / 2;   // canvasの中心のx座標
-  var centerY = canvas.height / 2;  // canvasの中心y座標
-  var radius  = 100;                // 枠円の半径および針の長さ
-  var radianAlpha = alpha * Math.PI /180; // 角度をラジアンに変換
-  context.clearRect(0, 0, canvas.width, canvas.heght); // canvasの内容を消す clearReact(x, y, w, h)
-  context.beginPath();              // 描画開始
-  context.arc(centerX, centerY, radius, 0, 2 * Math.PI); // 枠線を描く
-  context.strokeStyle = "rgb(0, 0, 0)"; // 枠円の線の色
-  context.lineWidth = 2;            // 線の太さ
-  context.stroke();                 // 線を描画
-  context.beginPath();              // 描画開始
-  context.moveTo(centerX, centerY); // 中心に移動
-  // 線を引く（cosでx座標、sinでy座標が得られる。長さradiusを掛ける。-90度すると真上に向く。）
-  context.lineTo(centerX + Math.cos(radianAlpha - Math.PI / 2)* radius,
-                 centerY + Math.sin(radianAlpha - Math.PI / 2) * radius);
-  context.strokeStyle = "rgb(255, 0, 0)";  // 針の線の色
-  context.lineWidth = 5;                   // 線の太さ
-  context.stroke();                        // 線を描画
-
+    var centerX = canvas.width  / 2;            // canvasの中心のX座標
+    var centerY = canvas.height / 2;	        // canvasの中心のY座標
+    var radius  = 100;                          // 枠円の半径および針の長さ
+    var radianAlpha = alpha * Math.PI / 180;    // 角度をラジアンに変換
+    context.clearRect(0, 0, canvas.width, canvas.height);   // canvasの内容を消す clearRect(x, y, w, h)
+    context.beginPath();                        // 描画開始
+    context.arc(centerX, centerY, radius, 0, 2 * Math.PI);  // 枠円を描く
+    context.strokeStyle = "rgb(0, 0, 0)";       // 枠円の線の色
+    context.lineWidth = 2;                      // 線の太さ
+    context.stroke();                           // 線を描画
+    context.beginPath();                        // 描画開始
+    context.moveTo(centerX, centerY);           // 中心に移動
+    // 線を引く（cosでx座標、sinでy座標が得られる。長さradiusを掛ける。-90度すると真上に向く。）
+    context.lineTo(centerX + Math.cos(radianAlpha - Math.PI / 2) * radius,
+                   centerY + Math.sin(radianAlpha - Math.PI / 2) * radius);
+    context.strokeStyle = "rgb(255, 0, 0)";     // 針の線の色
+    context.lineWidth = 5;                      // 線の太さ
+    context.stroke();                           // 線を描画
 }
 </script>
 </body>
