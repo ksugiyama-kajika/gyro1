@@ -1,6 +1,7 @@
 // iOS13対応のセンサーアクセス許可コード
 // ジャイロセンサーが有効化どうかをDeviceOrientationEventで確認
 if (window.DeviceOrientationEvent) {
+  console.log(window.DeviceOrientationEvent);
   // iOS13向け：ユーザーにアクセスの許可を求める関数があるかで確認
   // DeviceOrientationEvent.requestPermissionオブジェクトについて調べる
   if (DeviceOrientationEvent.requestPermission) {
@@ -56,4 +57,30 @@ if (window.DeviceOrientationEvent) {
     txt.innerHTML = "alpha: " + alpha + "<br>" // x軸の値
                   + "beta: " + beta + "<br>" // y軸の値
                   + "gamma: " + gamma; // z軸の値
+  }
+
+  // コンパスのような絵を描く drawOrientation 関数
+  function drawOrientation() {
+    // 中心のx座標とy座標
+    centerX = canvas.width / 2;
+    centerY = canvas.height / 2;
+    // 枠園の半径と針の長さを定義
+    var radius = 100;
+    // 角度をラジアンに変換
+    var radianAlpha = alpha * Math.PI / 180;
+    // canvasの内容を消すclearRect(x, y, w, h)
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    // ここから描画開始
+    context.beginPath();
+    context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    context.strokeStyle = "rgb(0, 0, 0)";
+    context.lineWidth = 2;
+    context.stroke();
+    context.moveTo(centerX, centerY);
+    // 線を引く
+    context.lineTo(centerX + Math.cos(radianAlpha - Math.PI / 2) * radius,
+                   centerY + Math.sin(radianAlpha - Math.PI / 2) * radius);
+    context.strokeStyle = "rgb(255, 0, 0)";
+    context.lineWidth = 5;
+    context.stroke();
   }
