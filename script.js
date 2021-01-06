@@ -35,18 +35,24 @@ if (window.DeviceOrientationEvent) {
   // deviceorientationイベント
   function deviceorientationHandler(dat) {
   // window.addEventListener("deviceorientation", (dat) => {
+
     // z軸（表裏）まわりの回転の角度（反時計回りがプラス）
     alpha = dat.alpha;
     // x軸（左右）まわりの回転の角度（引き起こすとプラス）
     beta = dat.beta;
     // y軸（上下）まわりの回転の角度（右に傾けるとプラス）
     gamma = dat.gamma;
+    console.log(alpha);
+    console.log(beta);
+    console.log(gamma);
   };
 
   // 指定時間ごとに繰り返し実行される setInterval(実行する内容, 間隔[ms])タイマーを設定
   var timer = window.setInterval(() => {
     // displayData関数を実行
     displayData();
+    // drawOrientation関数を実行, これでコンパスの方向を描く
+    drawOrientation();
     // 33msごとに実行（1秒間に30回）
   }, 33);
 
@@ -64,6 +70,8 @@ if (window.DeviceOrientationEvent) {
     // 中心のx座標とy座標
     centerX = canvas.width / 2;
     centerY = canvas.height / 2;
+    console.log(centerX);
+    console.log(centerY);
     // 枠園の半径と針の長さを定義
     var radius = 100;
     // 角度をラジアンに変換
