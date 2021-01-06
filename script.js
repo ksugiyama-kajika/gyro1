@@ -30,6 +30,10 @@ if (window.DeviceOrientationEvent) {
 
   // ジャイロの値を入れる変数を3個用意
   var alpha = 0, beta = 0, gamma = 0;
+  // canvas要素を取得
+  var canvas = document.getElementById("canvas");
+  // 絵を描く部品を取得
+  var context = canvas.getContext("2d");
 
   // ジャイロセンサの値が変化したら実行される
   // deviceorientationイベント
